@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 require 'mongoid'
-require 'mongoid-grid_fs'
+# require 'mongoid-grid_fs'
 require 'carrierwave'
 require 'carrierwave/validations/active_model'
 
@@ -178,12 +178,12 @@ module CarrierWave
         class_eval <<-RUBY, __FILE__, (__LINE__ + 1)
           def #{column}=(new_files)
             column = _mounter(:#{column}).serialization_column
-  
+
             previous_uploader_value = read_uploader(column)
             @_previous_uploader_value_for_#{column} = previous_uploader_value
-  
+
             write_uploader(column, []) if self.persisted? && read_uploader(column).nil?
-  
+
             send(:"\#{column}_will_change!")
 
             super
@@ -222,10 +222,10 @@ module CarrierWave
 
           def serializable_hash(options = nil)
             hash = {}
-  
+
             except = options && options[:except] && Array.wrap(options[:except]).map(&:to_s)
             only = options && options[:only] && Array.wrap(options[:only]).map(&:to_s)
-  
+
             self.class.uploaders.each do |column, _uploader|
               if (!only && !except) || (only && only.include?(column.to_s)) || (except && !except.include?(column.to_s))
                 next if _mounter(column.to_sym).uploaders.blank?
